@@ -26,7 +26,7 @@ By signing my name below and submitting the project, I confirm the above stateme
 
 Submission date:
 
-Team member 1 name:
+Team member 1 name: SHREEVARA ANDILA
 
-Team member 2 name:
+Team member 2 name: SARAN PAL THANIKONDA
 
