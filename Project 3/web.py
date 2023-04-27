@@ -8,27 +8,31 @@ import random
 # In order to terminate the program
 import sys
 serverSocketPing = socket(AF_INET, SOCK_DGRAM)
-serverSocketPing.bind(('192.168.0.105', 12000))
+serverSocketPing.bind(('192.168.0.106', 12000))
 print("Ready to receive pings from client")
 
+
 def pingServer():
-    
+    try:
+        while True:
+            # Generate random number in the range of 0 to 10
+            rand = random.randint(0, 10)
 
-    while True:
-        # Generate random number in the range of 0 to 10
-        rand = random.randint(0, 10)
+            # Receive the client packet along with the address it is coming from
+            message, address = serverSocketPing.recvfrom(1024)
 
-        # Receive the client packet along with the address it is coming from
-        message, address = serverSocketPing.recvfrom(1024)
+            # If rand is less is than 4, we consider the packet lost and do not respond
+            if rand < 4:
+                continue
 
-        # If rand is less is than 4, we consider the packet lost and do not respond
-        if rand < 4:
-            continue
+            # Otherwise, prepare the server response
 
-        # Otherwise, prepare the server response
-
-        # The server responds
-        serverSocketPing.sendto(message, address)
+            # The server responds
+            serverSocketPing.sendto(message, address)
+            serverSocketPing.settimeout(30)
+    except timeout:
+        # Handle the case when no response is received within one second
+        print('Server echo timed out.')
 
 
 def clientThread(connectionSocket, addr):
@@ -78,9 +82,9 @@ pingThread.start()
 # Prepare a server socket
 serverSocket = socket(AF_INET, SOCK_STREAM)
 serverSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-serverSocket.bind(('192.168.0.105', 28000))
+serverSocket.bind(('192.168.0.106', 28000))
 serverSocket.listen(1)
-print("Server is up at http://192.168.0.105:28000")
+print("Server is up at http://192.168.0.106:28000")
 print('The server is ready to receive...')
 
 while True:
